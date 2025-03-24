@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="admin">
+        <createTable tableName="patients">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date"/>
+            <column name="gender" type="varchar(10)"/>
+            <column name="phone" type="varchar(15)"/>
+            <column name="snils" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="admin">
+
+        <createSequence sequenceName="orders_id_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="orders">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="patient_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="status" type="varchar(50)"/>
+            <column name="comment" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="admin">
+        <createTable tableName="test_types">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="admin">
+        <createSequence sequenceName="tests_id_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="tests">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="test_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="execution_date" type="timestamp"/>
+            <column name="result" type="text"/>
+            <column name="reference_values" type="text"/>
+            <column name="status" type="varchar(50)"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="tests"
+                baseColumnNames="order_id"
+                referencedTableName="orders"
+                referencedColumnNames="id"
+                constraintName="fk_tests_orders"/>
+
+        <addForeignKeyConstraint
+                baseTableName="tests"
+                baseColumnNames="test_type_id"
+                referencedTableName="test_types"
+                referencedColumnNames="id"
+                constraintName="fk_tests_test_types"/>
+    </changeSet>
+
+
+
+
+</databaseChangeLog>
