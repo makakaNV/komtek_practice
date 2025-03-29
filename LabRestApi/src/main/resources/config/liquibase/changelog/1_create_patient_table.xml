@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="admin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="patient"/>
+            </not>
+        </preConditions>
+
+        <createSequence sequenceName="patient_id_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="patient">
+            <column name="id" type="bigint" defaultValueComputed="nextval('patient_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middleName" type="varchar(255)"/>
+            <column name="birthDate" type="date"/>
+            <column name="gender" type="varchar(10)"/>
+            <column name="phoneNumber" type="varchar(15)"/>
+            <column name="snils" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

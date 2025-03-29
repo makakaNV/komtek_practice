@@ -1,0 +1,58 @@
+spring:
+  # Настройки БД
+  config:
+    import: optional:classpath:application-dev.yml
+
+  application:
+    name: LabRestApi
+
+  # Настройки JPA/Hibernate
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Настройки liquibase
+  liquibase:
+    enabled: true
+    change-log: classpath:/config/liquibase/master.xml
+
+  # Настройки jackson
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: true
+
+  # Обработка ошибок
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+# Настройки swagger
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  info:
+    title: Lab API
+    description: API для лабораторной системы
+    version: 1.0.0
+    contact:
+      name: API Support
+      email: support@lab.com
+
+# Настройки логирования
+logging:
+  level:
+    org:
+      springdoc: DEBUG
+      springframework:
+        web: DEBUG

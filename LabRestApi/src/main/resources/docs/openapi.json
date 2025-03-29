@@ -1,0 +1,1708 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API для Лабораторной информационной системы",
+    "version": "2.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Patients",
+      "description": "Управление пациентами"
+    },
+    {
+      "name": "TestTypes",
+      "description": "Управление типами тестов"
+    },
+    {
+      "name": "Orders",
+      "description": "Управление заявками"
+    },
+    {
+      "name": "Tests",
+      "description": "Управление тестами"
+    }
+  ],
+  "paths": {
+    "/api/v1/tests/{id}": {
+      "get": {
+        "tags": [
+          "Tests"
+        ],
+        "summary": "Получить лаб. исследования по ID",
+        "description": "Возвращает лаб. исследования по указанному ID",
+        "operationId": "getTestById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Лаб исследования не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Лаб. исследования успешно найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tests"
+        ],
+        "summary": "Обновить лаб. исследование",
+        "description": "Обновляет данные лаб. исследования по указанному ID",
+        "operationId": "updateTest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "лаб. исследование успешно обновлено",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "лаб. исследование не найдено",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные лаб. исследования",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tests/{id}/result": {
+      "put": {
+        "tags": [
+          "Tests"
+        ],
+        "summary": "Добавляет результат лаб. исследования",
+        "description": "Добавляет результат лаб. исследования по указанному ID",
+        "operationId": "updateTestResult",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "result": "New result"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Некорректные данные для обновления лаб. исследования",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Результат лаб. исследования успешно добавлен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Лаб. исследование не найдено",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-types/{id}": {
+      "get": {
+        "tags": [
+          "TestTypes"
+        ],
+        "summary": "Получить тип лаб. исследований по ID",
+        "description": "Возвращает тип лаб. исследований по указанному идентификатору",
+        "operationId": "getTestTypeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Тип лаб. исследований успешно найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Тип лаб. исследований не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TestTypes"
+        ],
+        "summary": "Обновить тип лаб. исследований",
+        "description": "Обновляет данные типа лаб. исследований по указанному id",
+        "operationId": "updateTestType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestTypeRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Некорректные данные типа лаб. исследований",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Тип лаб. исследований успешно обновлен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Тип лаб. исследований не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TestTypes"
+        ],
+        "summary": "Удалить тип лаб. исследований",
+        "description": "Удаляет тип лаб. исследований по указанному идентификатору",
+        "operationId": "deleteTestType",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Тип лаб. исследований успешно удален"
+          },
+          "404": {
+            "description": "Тип лаб. исследований не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/{id}": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Получить пациента по ID",
+        "description": "Возвращает пациента по указанному идентификатору",
+        "operationId": "getPatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Пациент успешно найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Обновить пациента",
+        "description": "Обновляет данные пациента по указанному идентификатору",
+        "operationId": "updatePatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Пациент успешно обновлен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные пациента",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Удалить пациента",
+        "description": "Удаляет пациента по указанному идентификатору",
+        "operationId": "deletePatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Пациент успешно удален"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{id}/status": {
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Обновить статус заявки",
+        "description": "Обновляет поле status у заявки",
+        "operationId": "updateOrderStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REGISTERED",
+                "IN_PROGRESS",
+                "COMPLETED",
+                "CANCELED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Заявка успешно обновлена",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tests": {
+      "get": {
+        "tags": [
+          "Tests"
+        ],
+        "summary": "Получить все лаб. исследования",
+        "description": "Возвращает список всех лаб. исследований. Реализована пагинация: по умолчанию page=0 & size=50",
+        "operationId": "getAllTests",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список тестов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Лаб. исследования не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tests"
+        ],
+        "summary": "Создать новое лаб. исследование",
+        "description": "Создает новое лаб. исследование на основе переданных данных",
+        "operationId": "createTest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Лаб. исследование успешно создано",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные лаб. исследования",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/test-types": {
+      "get": {
+        "tags": [
+          "TestTypes"
+        ],
+        "summary": "Получить все типы лаб. исследований",
+        "description": "Возвращает список всех типов лаб. исследований. Реализована пагинация: по умолчанию page=0 & size=50",
+        "operationId": "getAllTestTypes",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Типы лаб. исследования не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список типов лаб. исследований успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TestTypes"
+        ],
+        "summary": "Создать новый тип лаб. исследований",
+        "description": "Создает новый тип лаб. исследований на основе переданных данных",
+        "operationId": "createTestType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestTypeRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Тип лаб. исследований успешно создан",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные типа лаб. исследований",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Получить всех пациентов",
+        "description": "Возвращает список всех пациентов. Реализована пагинация: по умолчанию page=0 & size=50",
+        "operationId": "getAllPatients",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациенты не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список пациентов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Создать нового пациента",
+        "description": "Создает нового пациента на основе переданных данных",
+        "operationId": "createPatient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Пациент успешно создан",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные пациента",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Получить все заявки",
+        "description": "Возвращает список всех заявок. Реализована пагинация: по умолчанию page=0 & size=50",
+        "operationId": "getAllOrders",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявки не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список заявок успешно получен.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Создать новую заявку",
+        "description": "Создает новую заявку на основе переданных данных",
+        "operationId": "createOrder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Некорректные данные заявки",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Заявка успешно создана",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderRequestDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/{patientId}/orders": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Получить заказы пациента",
+        "description": "Возвращает список заказов для указанного пациента",
+        "operationId": "getPatientOrders",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список заказов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/search": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Поиск пациентов по ФИО",
+        "description": "Возвращает список пациентов, соответствующих указанным параметрам поиска",
+        "operationId": "searchPatients",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "middleName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список пациентов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/search-by-birthdate": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Поиск пациентов по дате рождения",
+        "description": "Возвращает список пациентов, родившихся в указанную дату",
+        "operationId": "searchPatientsByBirthDate",
+        "parameters": [
+          {
+            "name": "birthDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список пациентов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/search-by-all": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Поиск пациентов по ФИО и/или дате рождения",
+        "description": "Возвращает список пациентов по заданным параметрам поиска",
+        "operationId": "searchPatients_1",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "middleName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "birthDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список пациентов успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{orderId}/tests": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Получить лаб. исследования по ID заявки",
+        "description": "Возвращает список лаб. исследований по ID заявки",
+        "operationId": "getTestsByOrderId",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список заявок успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Лаб. исследования не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Получить заявку по ID",
+        "description": "Возвращает заявку по указанному ID",
+        "operationId": "getOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Заявка успешна найдена",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Удаление заявки",
+        "description": "Удаляет заявку по указанному идентификатору",
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Заявка успешно удален"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/patient/{patientId}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Получить заявки по ID пациента",
+        "description": "Возвращает список заявок по ID пациента",
+        "operationId": "getOrdersByPatientId",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список заявок успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пациент не найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TestRequestDTO": {
+        "required": [
+          "orderId",
+          "referenceValues",
+          "result",
+          "status",
+          "testTypeId"
+        ],
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID заявки",
+            "format": "int64"
+          },
+          "testTypeId": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID типа исследования",
+            "format": "int64"
+          },
+          "result": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Результат лабораторного исследования",
+            "example": "Результат положительный"
+          },
+          "referenceValues": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Референсные значения для лабораторного исследования",
+            "example": "Значение"
+          },
+          "status": {
+            "type": "string",
+            "description": "Статус лабораторного исследования",
+            "example": "PENDING",
+            "enum": [
+              "PENDING",
+              "COMPLETED"
+            ]
+          }
+        },
+        "description": "Запрос DTO для создания и обновления лабораторного исследования"
+      },
+      "TestResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID лабораторного исследования",
+            "format": "int64"
+          },
+          "orderId": {
+            "type": "integer",
+            "description": "ID заявки",
+            "format": "int64"
+          },
+          "testTypeId": {
+            "type": "integer",
+            "description": "ID типа исследования",
+            "format": "int64"
+          },
+          "executionDate": {
+            "type": "string",
+            "description": "Дата выполнения лабораторного исследования (yyyy-MM-dd HH:mm:ss)",
+            "format": "date-time"
+          },
+          "result": {
+            "type": "string",
+            "description": "Результат лабораторного исследования",
+            "example": "Результат положительный"
+          },
+          "referenceValues": {
+            "type": "string",
+            "description": "Референсные значения для лабораторного исследования",
+            "example": "Значение"
+          },
+          "status": {
+            "type": "string",
+            "description": "Статус лабораторного исследования",
+            "example": "PENDING",
+            "enum": [
+              "PENDING",
+              "COMPLETED"
+            ]
+          }
+        },
+        "description": "Ответ DTO для просмотра лабораторных исследований"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Сообщение об ошибке",
+            "example": "Пациентов с id-404 не найдено"
+          },
+          "statusCode": {
+            "type": "integer",
+            "description": "Код ошибки",
+            "format": "int32",
+            "example": 404
+          }
+        }
+      },
+      "TestTypeRequestDTO": {
+        "required": [
+          "name",
+          "price"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Название лабораторного исследования",
+            "example": "Анализ крови"
+          },
+          "code": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Код лабораторного исследования",
+            "example": "BTG-03"
+          },
+          "description": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Описание лабораторного исследования",
+            "example": "Общее описание исследования"
+          },
+          "price": {
+            "type": "number",
+            "description": "Цена",
+            "example": 10.54
+          }
+        },
+        "description": "Запрос DTO для создания и обновления типа лабораторного исследования"
+      },
+      "TestTypeResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID типа исследования",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название лабораторного исследования",
+            "example": "Анализ крови"
+          },
+          "code": {
+            "type": "string",
+            "description": "Код лабораторного исследования",
+            "example": "BTG-03"
+          },
+          "description": {
+            "type": "string",
+            "description": "Описание лабораторного исследования",
+            "example": "Общее описание исследования"
+          },
+          "price": {
+            "type": "number",
+            "description": "Цена",
+            "example": 10.54
+          }
+        },
+        "description": "Ответ DTO для просмотра типов лабораторных исследований"
+      },
+      "PatientRequestDTO": {
+        "required": [
+          "birthDate",
+          "firstName",
+          "gender",
+          "lastName",
+          "phoneNumber",
+          "snils"
+        ],
+        "type": "object",
+        "properties": {
+          "lastName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Фамилия пациента",
+            "example": "Иванов"
+          },
+          "firstName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Имя пациента",
+            "example": "Иван"
+          },
+          "middleName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Отчество пациента",
+            "example": "Иванович"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения пациента yyyy-mm-dd",
+            "format": "date",
+            "example": "1991-01-01"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Пол пациента",
+            "example": "MALE",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Номер телефона",
+            "example": "+79333010203"
+          },
+          "snils": {
+            "type": "string",
+            "description": "Номер СНИЛС",
+            "example": "213123"
+          }
+        },
+        "description": "Запрос DTO для создания и обновления пациента"
+      },
+      "PatientResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID пациента",
+            "format": "int64",
+            "readOnly": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пациента",
+            "example": "Иванов"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пациента",
+            "example": "Иван"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Отчество пациента",
+            "example": "Иванович"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Дата рождения пациента yyyy-mm-dd",
+            "format": "date",
+            "example": "1991-01-01"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Пол пациента",
+            "example": "MALE",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Номер телефона",
+            "example": "+79333010203"
+          },
+          "snils": {
+            "type": "string",
+            "description": "Номер СНИЛС",
+            "example": "213123"
+          }
+        },
+        "description": "Ответ DTO для просмотра пациентов"
+      },
+      "OrderResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID заявки",
+            "format": "int64"
+          },
+          "patientId": {
+            "type": "integer",
+            "description": "ID пациента",
+            "format": "int64"
+          },
+          "createdDate": {
+            "type": "string",
+            "description": "Дата создания заявки yyyy-MM-dd HH:mm:ss",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Статус заявки",
+            "example": "CANCELED",
+            "enum": [
+              "REGISTERED",
+              "IN_PROGRESS",
+              "COMPLETED",
+              "CANCELED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "description": "Комментарий к заявке",
+            "example": "комментарий"
+          }
+        },
+        "description": "Ответ DTO для просмотра заявки"
+      },
+      "OrderRequestDTO": {
+        "required": [
+          "patientId",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1,
+            "type": "integer",
+            "description": "ID пациента",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "description": "Статус заявки",
+            "example": "CANCELED",
+            "enum": [
+              "REGISTERED",
+              "IN_PROGRESS",
+              "COMPLETED",
+              "CANCELED"
+            ]
+          },
+          "comment": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Комментарий к заявке",
+            "example": "комментарий"
+          }
+        },
+        "description": "Запрос DTO для создания и обновления заявки"
+      }
+    }
+  }
+}
