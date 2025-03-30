@@ -11,8 +11,7 @@ Spring Data JPA
 Maven  
 
 ## Недавние изменения
-1. application.properties заменен на application.yml
-  1.1. URL, username, password вынесены в application-dev.yml, конфигурация добавлена в .gitignore
+1. application.properties заменен на application.yml. URL, username, password вынесены в application-dev.yml, конфигурация добавлена в .gitignore
 2. К сущностям добавлена аннотация @Builder
 3. Миграции разбиты на разные файлы, директория config/liquibase/changelog/, добавлен master.xml
 4. Новый метод в сервисе PatientServiceImpl - searchPatients, принимает lastName, firstName, middleName, birthDate. Осуществляет поиск по ФИО и/или дате рождения
