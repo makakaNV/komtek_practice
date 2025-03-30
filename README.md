@@ -54,3 +54,39 @@ http://localhost:8080/swagger-ui/index.html#/
 ### GitHub Pages
 Сгенерированная документация доступна по ссылке: 
 https://makakanv.github.io/komtek_practice/
+
+##Структура проекта
+
+LabRestApi/
+│── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── lab/
+│   │   │           ├── config/        # Конфигурация
+│   │   │           ├── controller/    # REST-контроллеры
+│   │   │           ├── dto/           # DTO объекты
+│   │   │           │   ├── request/   # DTO для входящих запросов
+│   │   │           │   ├── response/  # DTO для ответов API
+│   │   │           ├── entity/        # Entity объекты
+│   │   │           ├── exception/     # Исключения
+│   │   │           ├── mapper/        # Мапперы для преобразования сущностей
+│   │   │           ├── repository/    # Репозитории
+│   │   │           ├── service/       # Сервисы
+│   │   │           │   ├── impl/      # Реализация сервисов
+│   │   │           ├── validator/     # Кастомные аннотации и валидаторы
+│   │   │           │   ├── impl/      # Реализация валидаторов
+│   │   ├── resources/
+│   │   │   ├── application.yml  # Основные настройки Spring Boot
+│   │   │   ├── application-dev.yml  # Настройки подключения к БД
+│   │   │   ├── config/
+│   │   │   │   ├── liquibase/   # Конфигурация миграций БД (Liquibase)
+│   │   │   │   │   ├── changelog/  # XML-файлы миграций
+│   │   │   │   │   ├── master.xml  # Основной файл Liquibase
+│   │   │   ├── docs/          # Файлы документации API 
+│   ├── test/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── lab/
+│   │   │           ├── service/  # Тесты сервисного слоя
+│── pom.xml
