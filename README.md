@@ -57,6 +57,7 @@ https://makakanv.github.io/komtek_practice/
 
 ##Структура проекта
 
+```
 LabRestApi/
 │── src/
 │   ├── main/
@@ -90,3 +91,4 @@ LabRestApi/
 │   │   │       └── lab/
 │   │   │           ├── service/  # Тесты сервисного слоя
 │── pom.xml
+```
