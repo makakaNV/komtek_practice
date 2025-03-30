@@ -4,11 +4,11 @@
 **LabRestApi** – REST API сервис для лабораторной информационной системы, позволяет регистрировать пациентов, создавать заявки на лабораторные исследования и получать результаты анализов.
 
 ## Технологический стек
-Java 17
-Spring Boot 3
-PostgreSQL
-Spring Data JPA
-Maven  
+* Java 17
+* Spring Boot 3
+* PostgreSQL
+* Spring Data JPA
+* Maven  
 
 ## Недавние изменения
 1. application.properties заменен на application.yml. URL, username, password вынесены в application-dev.yml, конфигурация dev добавлена в .gitignore
@@ -17,7 +17,7 @@ Maven
 4. Новый метод в сервисе PatientServiceImpl - searchPatients, принимает lastName, firstName, middleName, birthDate. Осуществляет поиск по ФИО и/или дате рождения
 5. DTO сущности разделены на requestDTO и responseDTO
 6. К сущностям добавлены аннотации @Table, @Column и @Schema
-7. Убран @Autowired
+7. Убраны @Autowired - получение бинов через конструкторы
 8. Добавлены мапперы для преобразования сущностей в сервисах
 9. Добавлена пагинация для методов findall() в сервисах
 10. Сервисы наследуются от интерфейсов
