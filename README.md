@@ -78,17 +78,17 @@ LabRestApi/
 │   │   │           ├── validator/     # Кастомные аннотации и валидаторы
 │   │   │           │   ├── impl/      # Реализация валидаторов
 │   │   ├── resources/
-│   │   │   ├── application.yml  # Основные настройки Spring Boot
+│   │   │   ├── application.yml      # Основные настройки Spring Boot
 │   │   │   ├── application-dev.yml  # Настройки подключения к БД
 │   │   │   ├── config/
-│   │   │   │   ├── liquibase/   # Конфигурация миграций БД (Liquibase)
-│   │   │   │   │   ├── changelog/  # XML-файлы миграций
-│   │   │   │   │   ├── master.xml  # Основной файл Liquibase
-│   │   │   ├── docs/          # Файлы документации API 
+│   │   │   │   ├── liquibase/       # Конфигурация миграций БД (Liquibase)
+│   │   │   │   │   ├── changelog/   # XML-файлы миграций
+│   │   │   │   │   ├── master.xml   # Основной файл Liquibase
+│   │   │   ├── docs/                # Файлы документации API 
 │   ├── test/
 │   │   ├── java/
 │   │   │   └── com/
 │   │   │       └── lab/
-│   │   │           ├── service/  # Тесты сервисного слоя
+│   │   │           ├── service/     # Тесты сервисного слоя
 │── pom.xml
 ```
