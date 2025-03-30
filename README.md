@@ -55,7 +55,7 @@ http://localhost:8080/swagger-ui/index.html#/
 Сгенерированная документация доступна по ссылке: 
 https://makakanv.github.io/komtek_practice/
 
-##Структура проекта
+## Структура проекта
 
 ```
 LabRestApi/
