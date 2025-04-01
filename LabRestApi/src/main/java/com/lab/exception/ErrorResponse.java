@@ -10,6 +10,7 @@ public class ErrorResponse {
     @Schema(description = "Код ошибки", example = "404")
     private int statusCode;
 
+    @SuppressWarnings("unused")
     public ErrorResponse() {}
 
     public ErrorResponse(String message, int statusCode) {
@@ -25,10 +26,12 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    @SuppressWarnings("unused")
     public int getStatusCode() {
         return statusCode;
     }
 
+    @SuppressWarnings("unused")
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }

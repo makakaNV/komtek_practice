@@ -4,7 +4,7 @@ import com.lab.dto.request.TestTypeRequestDTO;
 import com.lab.dto.response.TestTypeResponseDTO;
 import com.lab.entity.*;
 import com.lab.exception.TestTypeNotFoundException;
-import com.lab.mapper.TestTypeMapper;
+import com.lab.mapper.impl.TestTypeMapperImpl;
 import com.lab.repository.TestTypeRepository;
 import com.lab.service.impl.TestTypeServiceImpl;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ public class TestTypeServiceImplTest {
     private TestTypeRepository testTypeRepository;
 
     @Mock
-    private TestTypeMapper testTypeMapper;
+    private TestTypeMapperImpl testTypeMapper;
 
     @InjectMocks
     private TestTypeServiceImpl testTypeService;
@@ -67,10 +67,10 @@ public class TestTypeServiceImplTest {
         when(testTypesPage.getContent()).thenReturn(List.of(testType));
         when(testTypeMapper.toResponseDTOList(anyList())).thenReturn(List.of(testTypeResponseDTO));
 
-        List<TestTypeResponseDTO> result = testTypeService.getAllTestTypes(pageable);
+        Page<TestTypeResponseDTO> result = testTypeService.getAllTestTypes(pageable);
 
         assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
+        assertEquals(1, result.getTotalElements());
         verify(testTypeRepository).findAll(pageable);
     }
 

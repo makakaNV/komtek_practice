@@ -3,13 +3,14 @@ package com.lab.service;
 import com.lab.dto.request.PatientRequestDTO;
 import com.lab.dto.response.OrderResponseDTO;
 import com.lab.dto.response.PatientResponseDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface PatientService {
-    List<PatientResponseDTO> getAllPatients(Pageable pageable);
+    Page<PatientResponseDTO> getAllPatients(Pageable pageable);
     PatientResponseDTO createPatient(PatientRequestDTO patientDTO);
     PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientDTO);
     PatientResponseDTO getPatient(Long id);

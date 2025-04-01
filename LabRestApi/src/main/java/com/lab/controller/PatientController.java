@@ -5,6 +5,7 @@ import com.lab.dto.response.OrderResponseDTO;
 import com.lab.dto.response.PatientResponseDTO;
 import com.lab.exception.ErrorResponse;
 import com.lab.service.impl.PatientServiceImpl;
+import com.lab.util.PaginationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,9 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,7 @@ public class PatientController {
     }
 
     @GetMapping
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Получить всех пациентов",
             description = "Возвращает список всех пациентов. Реализована пагинация: по умолчанию page=0 & size=50")
@@ -52,12 +56,14 @@ public class PatientController {
             @PageableDefault(size = 50)
             Pageable pageable
     ) {
-        List<PatientResponseDTO> patients = patientServiceImpl.getAllPatients(pageable);
-        return ResponseEntity.ok(patients);
+        Page<PatientResponseDTO> patients = patientServiceImpl.getAllPatients(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(patients, "/api/v1/patients");
+        return new ResponseEntity<>(patients.getContent(), headers, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
+    @SuppressWarnings("unused")
     @Operation(summary = "Получить пациента по ID", description = "Возвращает пациента по указанному идентификатору")
     @ApiResponse(
             responseCode = "200",
@@ -76,6 +82,7 @@ public class PatientController {
 
 
     @PostMapping
+    @SuppressWarnings("unused")
     @Operation(summary = "Создать нового пациента", description = "Создает нового пациента" +
             " на основе переданных данных")
     @ApiResponse(
@@ -95,6 +102,7 @@ public class PatientController {
 
 
     @PutMapping("/{id}")
+    @SuppressWarnings("unused")
     @Operation(summary = "Обновить пациента", description = "Обновляет данные пациента по указанному идентификатору")
     @ApiResponse(
             responseCode = "200",
@@ -122,6 +130,7 @@ public class PatientController {
 
 
     @GetMapping("/search")
+    @SuppressWarnings("unused")
     @Operation(summary = "Поиск пациентов по ФИО", description = "Возвращает список пациентов," +
             " соответствующих указанным параметрам поиска")
     @ApiResponse(
@@ -144,6 +153,7 @@ public class PatientController {
 
 
     @GetMapping("/search-by-birthdate")
+    @SuppressWarnings("unused")
     @Operation(summary = "Поиск пациентов по дате рождения", description = "Возвращает список пациентов," +
             " родившихся в указанную дату")
     @ApiResponse(
@@ -162,6 +172,7 @@ public class PatientController {
     }
 
     @GetMapping("/search-by-all")
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Поиск пациентов по ФИО и/или дате рождения",
             description = "Возвращает список пациентов по заданным параметрам поиска"
@@ -192,6 +203,7 @@ public class PatientController {
     }
 
     @GetMapping("/{patientId}/orders")
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Получить заказы пациента",
             description = "Возвращает список заказов для указанного пациента"

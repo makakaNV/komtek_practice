@@ -7,7 +7,7 @@ import com.lab.entity.*;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.PatientNotFoundException;
 import com.lab.mapper.OrderMapper;
-import com.lab.mapper.PatientMapper;
+import com.lab.mapper.impl.PatientMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.PatientRepository;
 import com.lab.service.impl.PatientServiceImpl;
@@ -38,7 +38,7 @@ public class PatientServiceImplTest {
     private OrderRepository orderRepository;
 
     @Mock
-    private PatientMapper patientMapper;
+    private PatientMapperImpl patientMapper;
 
     @Mock
     private OrderMapper orderMapper;
@@ -100,10 +100,10 @@ public class PatientServiceImplTest {
         when(patientRepository.findAll(any(Pageable.class))).thenReturn(page);
         when(patientMapper.toResponseDTOList(anyList())).thenReturn(List.of(patientResponseDTO));
 
-        List<PatientResponseDTO> result = patientService.getAllPatients(Pageable.unpaged());
+        Page<PatientResponseDTO> result = patientService.getAllPatients(Pageable.unpaged());
 
         assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
+        assertEquals(1, result.getTotalElements());
         verify(patientRepository).findAll(any(Pageable.class));
     }
 

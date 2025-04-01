@@ -4,7 +4,7 @@ import com.lab.dto.request.TestTypeRequestDTO;
 import com.lab.dto.response.TestTypeResponseDTO;
 import com.lab.entity.TestType;
 import com.lab.exception.TestTypeNotFoundException;
-import com.lab.mapper.TestTypeMapper;
+import com.lab.mapper.impl.TestTypeMapperImpl;
 import com.lab.repository.TestTypeRepository;
 import com.lab.service.TestTypeService;
 import jakarta.transaction.Transactional;
@@ -12,45 +12,44 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class TestTypeServiceImpl implements TestTypeService {
 
     private final TestTypeRepository testTypeRepository;
-    private final TestTypeMapper testTypeMapper;
+    private final TestTypeMapperImpl testTypeMapperImpl;
 
     public TestTypeServiceImpl(
             TestTypeRepository testTypeRepository,
-            TestTypeMapper testTypeMapper
+            TestTypeMapperImpl testTypeMapperImpl
     ) {
         this.testTypeRepository = testTypeRepository;
-        this.testTypeMapper = testTypeMapper;
+        this.testTypeMapperImpl = testTypeMapperImpl;
     }
 
     @Override
-    public List<TestTypeResponseDTO> getAllTestTypes(Pageable pageable) {
+    public Page<TestTypeResponseDTO> getAllTestTypes(Pageable pageable) {
         Page<TestType> testTypesPage = testTypeRepository.findAll(pageable);
 
         if (testTypesPage.isEmpty()) {
             throw new TestTypeNotFoundException("Типов исследования не найдено");
         }
-        return testTypeMapper.toResponseDTOList(testTypesPage.getContent());
+        return testTypesPage.map(testTypeMapperImpl::toResponseDTO);
     }
 
     @Override
     public TestTypeResponseDTO getTestTypeById(Long id) {
         TestType testType = testTypeRepository.findById(id)
                 .orElseThrow(() -> new TestTypeNotFoundException("Типа исследования с id-" + id + " не найдено"));
-        return testTypeMapper.toResponseDTO(testType);
+        return testTypeMapperImpl.toResponseDTO(testType);
     }
 
     @Override
     public TestTypeResponseDTO createTestType(TestTypeRequestDTO testTypeDTO) {
-        TestType testType = testTypeMapper.toEntity(testTypeDTO);
+        TestType testType = testTypeMapperImpl.toEntity(testTypeDTO);
 
         testType = testTypeRepository.save(testType);
-        return testTypeMapper.toResponseDTO(testType);
+        return testTypeMapperImpl.toResponseDTO(testType);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class TestTypeServiceImpl implements TestTypeService {
         testType.setPrice(testTypeDTO.getPrice());
 
         testType = testTypeRepository.save(testType);
-        return testTypeMapper.toResponseDTO(testType);
+        return testTypeMapperImpl.toResponseDTO(testType);
     }
 
     @Override

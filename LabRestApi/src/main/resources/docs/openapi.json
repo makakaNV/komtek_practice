@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "API для Лабораторной информационной системы",
-    "version": "2.0"
+    "version": "2.1"
   },
   "servers": [
     {
@@ -49,22 +49,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Лаб исследования не найдены",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Лаб. исследования успешно найдены",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TestResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Лаб исследования не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -166,16 +166,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Некорректные данные для обновления лаб. исследования",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Результат лаб. исследования успешно добавлен",
             "content": {
@@ -188,6 +178,16 @@
           },
           "404": {
             "description": "Лаб. исследование не найдено",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректные данные для обновления лаб. исследования",
             "content": {
               "*/*": {
                 "schema": {
@@ -219,22 +219,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Тип лаб. исследований успешно найден",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/TestTypeResponseDTO"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Тип лаб. исследований не найден",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Тип лаб. исследований успешно найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
                 }
               }
             }
@@ -270,8 +270,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Некорректные данные типа лаб. исследований",
+          "404": {
+            "description": "Тип лаб. исследований не найден",
             "content": {
               "*/*": {
                 "schema": {
@@ -290,8 +290,8 @@
               }
             }
           },
-          "404": {
-            "description": "Тип лаб. исследований не найден",
+          "400": {
+            "description": "Некорректные данные типа лаб. исследований",
             "content": {
               "*/*": {
                 "schema": {
@@ -321,9 +321,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Тип лаб. исследований успешно удален"
-          },
           "404": {
             "description": "Тип лаб. исследований не найден",
             "content": {
@@ -333,6 +330,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "Тип лаб. исследований успешно удален"
           }
         }
       }
@@ -357,22 +357,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Пациент успешно найден",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PatientResponseDTO"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Пациент не найден",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Пациент успешно найден",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
                 }
               }
             }
@@ -408,16 +408,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Пациент успешно обновлен",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PatientResponseDTO"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Пациент не найден",
             "content": {
@@ -434,6 +424,16 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Пациент успешно обновлен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
                 }
               }
             }
@@ -725,22 +725,22 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Тип лаб. исследований успешно создан",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/TestTypeResponseDTO"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Некорректные данные типа лаб. исследований",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Тип лаб. исследований успешно создан",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestTypeResponseDTO"
                 }
               }
             }
@@ -793,22 +793,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Пациенты не найдены",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Список пациентов успешно получен",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/PatientResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пациенты не найдены",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -833,22 +833,22 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Пациент успешно создан",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PatientResponseDTO"
-                }
-              }
-            }
-          },
           "400": {
             "description": "Некорректные данные пациента",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Пациент успешно создан",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDTO"
                 }
               }
             }
@@ -1315,22 +1315,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Список заявок успешно получен",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderResponseDTO"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Пациент не найден",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Список заявок успешно получен",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponseDTO"
                 }
               }
             }
@@ -1585,8 +1585,7 @@
           "id": {
             "type": "integer",
             "description": "ID пациента",
-            "format": "int64",
-            "readOnly": true
+            "format": "int64"
           },
           "lastName": {
             "type": "string",

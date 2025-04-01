@@ -6,7 +6,7 @@ import com.lab.entity.*;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.TestNotFoundException;
 import com.lab.exception.TestTypeNotFoundException;
-import com.lab.mapper.TestMapper;
+import com.lab.mapper.impl.TestMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.TestRepository;
 import com.lab.repository.TestTypeRepository;
@@ -41,7 +41,7 @@ public class TestServiceImplTest {
     private TestTypeRepository testTypeRepository;
 
     @Mock
-    private TestMapper testMapper;
+    private TestMapperImpl testMapper;
 
     @InjectMocks
     private TestServiceImpl testService;
@@ -96,10 +96,10 @@ public class TestServiceImplTest {
         when(testRepository.findAll(any(Pageable.class))).thenReturn(page);
         when(testMapper.toResponseDTOList(anyList())).thenReturn(List.of(testResponseDTO));
 
-        List<TestResponseDTO> result = testService.getAllTests(Pageable.unpaged());
+        Page<TestResponseDTO> result = testService.getAllTests(Pageable.unpaged());
 
         assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
+        assertEquals(1, result.getTotalElements());
         verify(testRepository).findAll(any(Pageable.class));
     }
 

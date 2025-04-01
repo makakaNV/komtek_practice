@@ -7,8 +7,8 @@ import com.lab.entity.Order;
 import com.lab.entity.Patient;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.PatientNotFoundException;
-import com.lab.mapper.OrderMapper;
-import com.lab.mapper.PatientMapper;
+import com.lab.mapper.impl.OrderMapperImpl;
+import com.lab.mapper.impl.PatientMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.PatientRepository;
 import com.lab.service.PatientService;
@@ -24,37 +24,37 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final OrderRepository orderRepository;
-    private final PatientMapper patientMapper;
-    private final OrderMapper orderMapper;
+    private final PatientMapperImpl patientMapperImpl;
+    private final OrderMapperImpl orderMapperImpl;
 
     public PatientServiceImpl(
             PatientRepository patientRepository,
             OrderRepository orderRepository,
-            PatientMapper patientMapper,
-            OrderMapper orderMapper
+            PatientMapperImpl patientMapperImpl,
+            OrderMapperImpl orderMapperImpl
     ) {
         this.patientRepository = patientRepository;
         this.orderRepository = orderRepository;
-        this.patientMapper = patientMapper;
-        this.orderMapper = orderMapper;
+        this.patientMapperImpl = patientMapperImpl;
+        this.orderMapperImpl = orderMapperImpl;
     }
 
     @Override
-    public List<PatientResponseDTO> getAllPatients(Pageable pageable) {
+    public Page<PatientResponseDTO> getAllPatients(Pageable pageable) {
         Page<Patient> patientsPage = patientRepository.findAll(pageable);
 
         if (patientsPage.isEmpty()) {
             throw new PatientNotFoundException("Пациентов не найдено");
         }
 
-        return patientMapper.toResponseDTOList(patientsPage.getContent());
+        return patientsPage.map(patientMapperImpl::toResponseDTO);
     }
 
     @Override
     public PatientResponseDTO createPatient(PatientRequestDTO patientDTO) {
-        Patient patient = patientMapper.toEntity(patientDTO);
+        Patient patient = patientMapperImpl.toEntity(patientDTO);
         patient = patientRepository.save(patient);
-        return patientMapper.toResponseDTO(patient);
+        return patientMapperImpl.toResponseDTO(patient);
     }
 
     @Override
@@ -72,14 +72,14 @@ public class PatientServiceImpl implements PatientService {
 
         patient = patientRepository.save(patient);
 
-        return patientMapper.toResponseDTO(patient);
+        return patientMapperImpl.toResponseDTO(patient);
     }
 
     @Override
     public PatientResponseDTO getPatient(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Пациентов с id-" + id + " не найдено"));
-        return patientMapper.toResponseDTO(patient);
+        return patientMapperImpl.toResponseDTO(patient);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class PatientServiceImpl implements PatientService {
         if (orders.isEmpty()) {
             throw new OrderNotFoundException("Заявок у пациента с id-" + patientId + " не найдено");
         }
-        return orderMapper.toResponseDTOList(orders);
+        return orderMapperImpl.toResponseDTOList(orders);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class PatientServiceImpl implements PatientService {
         if (patients.isEmpty()) {
             throw new PatientNotFoundException("Пациентов с таким ФИО не найдено");
         }
-        return patientMapper.toResponseDTOList(patients);
+        return patientMapperImpl.toResponseDTOList(patients);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class PatientServiceImpl implements PatientService {
         if (patients.isEmpty()) {
             throw new PatientNotFoundException("Пациентов с датой рождения " + birthDate + " не найдено");
         }
-        return patientMapper.toResponseDTOList(patients);
+        return patientMapperImpl.toResponseDTOList(patients);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class PatientServiceImpl implements PatientService {
             throw new PatientNotFoundException("Пациенты по указанным критериям не найдены");
         }
 
-        return patientMapper.toResponseDTOList(patients);
+        return patientMapperImpl.toResponseDTOList(patients);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.lab.dto.request.TestRequestDTO;
 import com.lab.dto.response.TestResponseDTO;
 import com.lab.exception.ErrorResponse;
 import com.lab.service.impl.TestServiceImpl;
+import com.lab.util.PaginationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,8 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/tests")
 @Tag(name = "Tests", description = "Управление тестами")
+@SuppressWarnings("unused")
 public class TestController {
 
     private final TestServiceImpl testServiceImpl;
@@ -52,8 +56,9 @@ public class TestController {
             @PageableDefault(size = 50)
             Pageable pageable
     ) {
-        List<TestResponseDTO> tests = testServiceImpl.getAllTests(pageable);
-        return ResponseEntity.ok(tests);
+        Page<TestResponseDTO> tests = testServiceImpl.getAllTests(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(tests, "/api/v1/tests");
+        return new ResponseEntity<>(tests.getContent(), headers, HttpStatus.OK);
     }
 
 

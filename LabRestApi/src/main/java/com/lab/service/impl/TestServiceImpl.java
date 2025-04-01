@@ -8,7 +8,7 @@ import com.lab.entity.TestType;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.TestNotFoundException;
 import com.lab.exception.TestTypeNotFoundException;
-import com.lab.mapper.TestMapper;
+import com.lab.mapper.impl.TestMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.TestRepository;
 import com.lab.repository.TestTypeRepository;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -26,37 +25,37 @@ public class TestServiceImpl implements TestService {
     private final TestRepository testRepository;
     private final OrderRepository orderRepository;
     private final TestTypeRepository testTypeRepository;
-    private final TestMapper testMapper;
+    private final TestMapperImpl testMapperImpl;
 
 
     public TestServiceImpl(
             TestRepository testRepository,
             OrderRepository orderRepository,
             TestTypeRepository testTypeRepository,
-            TestMapper testMapper
+            TestMapperImpl testMapperImpl
     ) {
         this.testRepository = testRepository;
         this.orderRepository = orderRepository;
         this.testTypeRepository = testTypeRepository;
-        this.testMapper = testMapper;
+        this.testMapperImpl = testMapperImpl;
     }
 
     @Override
-    public List<TestResponseDTO> getAllTests(Pageable pageable) {
+    public Page<TestResponseDTO> getAllTests(Pageable pageable) {
         Page<Test> testsPage = testRepository.findAll(pageable);
 
         if (testsPage.isEmpty()) {
             throw new TestNotFoundException("Лаб. исследований не найдено");
         }
 
-        return testMapper.toResponseDTOList(testsPage.getContent());
+        return testsPage.map(testMapperImpl::toResponseDTO);
     }
 
     @Override
     public TestResponseDTO getTestById(Long id) {
         Test test = testRepository.findById(id)
                 .orElseThrow(() -> new TestNotFoundException("Тест с id-" + id + " не найден"));
-        return testMapper.toResponseDTO(test);
+        return testMapperImpl.toResponseDTO(test);
     }
 
     @Override
@@ -69,11 +68,11 @@ public class TestServiceImpl implements TestService {
                 .orElseThrow(() -> new TestTypeNotFoundException("Тип исследования с id- "
                         + testDTO.getTestTypeId() + " не найден"));
 
-        Test test = testMapper.toEntity(testDTO, order, testType);
+        Test test = testMapperImpl.toEntity(testDTO, order, testType);
 
         test = testRepository.save(test);
 
-        return testMapper.toResponseDTO(test);
+        return testMapperImpl.toResponseDTO(test);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class TestServiceImpl implements TestService {
         test.setStatus(testDTO.getStatus());
 
         test = testRepository.save(test);
-        return testMapper.toResponseDTO(test);
+        return testMapperImpl.toResponseDTO(test);
     }
 
     @Override
@@ -102,6 +101,6 @@ public class TestServiceImpl implements TestService {
         }
 
         test = testRepository.save(test);
-        return testMapper.toResponseDTO(test);
+        return testMapperImpl.toResponseDTO(test);
     }
 }

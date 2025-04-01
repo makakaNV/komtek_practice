@@ -6,6 +6,7 @@ import com.lab.dto.response.TestResponseDTO;
 import com.lab.exception.ErrorResponse;
 import com.lab.service.impl.OrderServiceImpl;
 import com.lab.entity.Status;
+import com.lab.util.PaginationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,8 +14,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,7 @@ public class OrderController {
 
 
     @GetMapping
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Получить все заявки",
             description = "Возвращает список всех заявок. Реализована пагинация: по умолчанию page=0 & size=50"
@@ -53,11 +57,13 @@ public class OrderController {
             @PageableDefault(size = 50)
             Pageable pageable
     ) {
-        List<OrderResponseDTO> orders = orderServiceImpl.getAllOrders(pageable);
-        return ResponseEntity.ok(orders);
+        Page<OrderResponseDTO> orders = orderServiceImpl.getAllOrders(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(orders, "/api/v1/orders");
+        return new ResponseEntity<>(orders.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
+    @SuppressWarnings("unused")
     @Operation(summary = "Получить заявку по ID", description = "Возвращает заявку по указанному ID")
     @ApiResponse(
             responseCode = "200",
@@ -75,6 +81,7 @@ public class OrderController {
     }
 
     @PostMapping
+    @SuppressWarnings("unused")
     @Operation(summary = "Создать новую заявку", description = "Создает новую заявку на основе переданных данных")
     @ApiResponse(
             responseCode = "201",
@@ -95,6 +102,7 @@ public class OrderController {
 
 
     @PutMapping("/{id}/status")
+    @SuppressWarnings("unused")
     @Operation(summary = "Обновить статус заявки", description = "Обновляет поле status у заявки")
     @ApiResponse(
             responseCode = "200",
@@ -116,6 +124,7 @@ public class OrderController {
 
 
     @GetMapping("/patient/{patientId}")
+    @SuppressWarnings("unused")
     @Operation(summary = "Получить заявки по ID пациента", description = "Возвращает список заявок по ID пациента")
     @ApiResponse(
             responseCode = "200",
@@ -134,6 +143,7 @@ public class OrderController {
 
 
     @GetMapping("/{orderId}/tests")
+    @SuppressWarnings("unused")
     @Operation(summary = "Получить лаб. исследования по ID заявки",
             description = "Возвращает список лаб. исследований по ID заявки")
     @ApiResponse(

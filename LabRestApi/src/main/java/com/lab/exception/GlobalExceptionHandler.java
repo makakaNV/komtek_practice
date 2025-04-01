@@ -21,6 +21,7 @@ import java.util.Map;
 
 @Hidden
 @RestControllerAdvice
+@SuppressWarnings("unused")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

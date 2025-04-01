@@ -4,6 +4,7 @@ import com.lab.dto.request.TestTypeRequestDTO;
 import com.lab.dto.response.TestTypeResponseDTO;
 import com.lab.exception.ErrorResponse;
 import com.lab.service.impl.TestTypeServiceImpl;
+import com.lab.util.PaginationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,8 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,7 @@ public class TestTypeController {
 
 
     @GetMapping
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Получить все типы лаб. исследований",
             description = "Возвращает список всех типов лаб. исследований." +
@@ -52,12 +56,14 @@ public class TestTypeController {
             @PageableDefault(size = 50)
             Pageable pageable
     ) {
-        List<TestTypeResponseDTO> testTypes = testTypeServiceImpl.getAllTestTypes(pageable);
-        return ResponseEntity.ok(testTypes);
+        Page<TestTypeResponseDTO> testTypes = testTypeServiceImpl.getAllTestTypes(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(testTypes, "/api/v1/test-types");
+        return new ResponseEntity<>(testTypes.getContent(), headers, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Получить тип лаб. исследований по ID",
             description = "Возвращает тип лаб. исследований по указанному идентификатору"
@@ -79,6 +85,7 @@ public class TestTypeController {
 
 
     @PostMapping
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Создать новый тип лаб. исследований",
             description = "Создает новый тип лаб. исследований на основе переданных данных"
@@ -100,6 +107,7 @@ public class TestTypeController {
 
 
     @PutMapping("/{id}")
+    @SuppressWarnings("unused")
     @Operation(
             summary = "Обновить тип лаб. исследований",
             description = "Обновляет данные типа лаб. исследований по указанному id"

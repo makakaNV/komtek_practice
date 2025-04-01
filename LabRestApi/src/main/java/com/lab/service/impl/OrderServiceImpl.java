@@ -10,8 +10,8 @@ import com.lab.entity.Test;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.PatientNotFoundException;
 import com.lab.exception.TestNotFoundException;
-import com.lab.mapper.OrderMapper;
-import com.lab.mapper.TestMapper;
+import com.lab.mapper.impl.OrderMapperImpl;
+import com.lab.mapper.impl.TestMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.PatientRepository;
 import com.lab.repository.TestRepository;
@@ -28,32 +28,32 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final TestRepository testRepository;
     private final PatientRepository patientRepository;
-    private final OrderMapper orderMapper;
-    private final TestMapper testMapper;
+    private final OrderMapperImpl orderMapperImpl;
+    private final TestMapperImpl testMapperImpl;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
             TestRepository testRepository,
             PatientRepository patientRepository,
-            OrderMapper orderMapper,
-            TestMapper testMapper
+            OrderMapperImpl orderMapperImpl,
+            TestMapperImpl testMapperImpl
     ) {
         this.orderRepository = orderRepository;
         this.testRepository = testRepository;
         this.patientRepository = patientRepository;
-        this.orderMapper = orderMapper;
-        this.testMapper = testMapper;
+        this.orderMapperImpl = orderMapperImpl;
+        this.testMapperImpl = testMapperImpl;
     }
 
     @Override
-    public List<OrderResponseDTO> getAllOrders(Pageable pageable) {
+    public Page<OrderResponseDTO> getAllOrders(Pageable pageable) {
         Page<Order> ordersPage = orderRepository.findAll(pageable);
 
         if (ordersPage.isEmpty()) {
             throw new OrderNotFoundException("Заявок не найдено");
         }
 
-        return orderMapper.toResponseDTOList(ordersPage.getContent());
+        return ordersPage.map(orderMapperImpl::toResponseDTO);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Заявки с id-" + id + " не найдено"));
 
-        return orderMapper.toResponseDTO(order);
+        return orderMapperImpl.toResponseDTO(order);
     }
 
     @Override
@@ -70,11 +70,11 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new PatientNotFoundException("Пациентов с id-"
                         + orderRequestDTO.getPatientId() + " не найдено"));
 
-        Order order = orderMapper.toEntity(orderRequestDTO, patient);
+        Order order = orderMapperImpl.toEntity(orderRequestDTO, patient);
 
         order = orderRepository.save(order);
 
-        return orderMapper.toResponseDTO(order);
+        return orderMapperImpl.toResponseDTO(order);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(status);
         order = orderRepository.save(order);
 
-        return orderMapper.toResponseDTO(order);
+        return orderMapperImpl.toResponseDTO(order);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         if (orders.isEmpty()) {
             throw new OrderNotFoundException("Заявок у пациента с id-" + patientId + " не найдено");
         }
-        return orderMapper.toResponseDTOList(orders);
+        return orderMapperImpl.toResponseDTOList(orders);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
         if (tests.isEmpty()) {
             throw new TestNotFoundException("Тестов для заявки с id-" + orderId + " не найдено");
         }
-        return testMapper.toResponseDTOList(tests);
+        return testMapperImpl.toResponseDTOList(tests);
     }
 
     @Override

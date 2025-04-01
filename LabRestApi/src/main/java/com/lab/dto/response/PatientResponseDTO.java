@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class PatientResponseDTO {
 
     @Schema(description = "ID пациента")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Schema(description = "Фамилия пациента", example = "Иванов")
