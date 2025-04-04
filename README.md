@@ -14,7 +14,7 @@
 1. Добавлена аутентификация/авторизация на основе JWT
 
 ## Конфигурация и запуск 
-В файле `src/main/resources/application-dev.yml` нужно указать параметры подключения:  
+В файле `src/main/resources/application-dev.yml` нужно указать параметры подключения БД:  
 
 ```yaml
 spring:
@@ -28,6 +28,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+```
+
+Также указать secret key для подписи jwt-токенов
+
+```yaml
+token:
+  signing:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75000000
 ```
 
 Собрать и запустить проект можно через Maven:
