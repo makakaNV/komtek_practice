@@ -11,21 +11,7 @@
 * Maven  
 
 ## Недавние изменения
-1. application.properties заменен на application.yml. URL, username, password вынесены в application-dev.yml, конфигурация dev добавлена в .gitignore
-2. К сущностям добавлена аннотация @Builder
-3. Миграции разбиты на разные файлы, директория config/liquibase/changelog/, добавлен master.xml
-4. Новый метод в сервисе PatientServiceImpl - searchPatients, принимает lastName, firstName, middleName, birthDate. Осуществляет поиск по ФИО и/или дате рождения
-5. DTO сущности разделены на requestDTO и responseDTO
-6. К сущностям добавлены аннотации @Table, @Column и @Schema
-7. Убраны @Autowired - получение бинов через конструкторы
-8. Добавлены мапперы для преобразования сущностей в сервисах
-9. Добавлена пагинация для методов findall() в сервисах
-10. Сервисы наследуются от интерфейсов
-
-11. Изменения в пагинации. Добавлено возвращение мета-информации в заголовках для методов getAll
-12. Добавлен util/PaginationUtil, генерирует заголовки для пагинации
-13. Мапперы реализуют интерфейсы
-14. Для помеченных неиспользуемыми методов/конструкторов добавлена аннотация @SuppressWarnings("unused")
+1. Добавлена аутентификация/авторизация на основе JWT
 
 ## Конфигурация и запуск 
 В файле `src/main/resources/application-dev.yml` нужно указать параметры подключения:  
@@ -57,8 +43,8 @@ java -jar target/LabRestApi.jar
 http://localhost:8080/swagger-ui/index.html#/
 
 ### GitHub Pages
-Сгенерированная документация доступна по ссылке: 
-https://makakanv.github.io/komtek_practice/
+~~Сгенерированная документация доступна по ссылке: 
+https://makakanv.github.io/komtek_practice/~~
 
 ## Структура проекта
 
@@ -78,9 +64,11 @@ LabRestApi/
 │   │   │           ├── exception/     # Исключения
 │   │   │           ├── mapper/        # Мапперы для преобразования сущностей
 │   │   │           ├── repository/    # Репозитории
+│   │   │           ├── security/      # Безопасность
 │   │   │           ├── service/       # Сервисы
 │   │   │           │   ├── impl/      # Реализация сервисов
 │   │   │           ├── validator/     # Кастомные аннотации и валидаторы
+│   │   │           ├── util/          # Утилиты
 │   │   │           │   ├── impl/      # Реализация валидаторов
 │   │   ├── resources/
 │   │   │   ├── application.yml      # Основные настройки Spring Boot
