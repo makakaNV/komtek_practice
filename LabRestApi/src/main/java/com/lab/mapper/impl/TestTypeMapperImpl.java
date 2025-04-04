@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class TestTypeMapperImpl implements TestTypeMapper {
 
+    @Override
     public TestTypeResponseDTO toResponseDTO(TestType testType) {
         return TestTypeResponseDTO.builder()
                 .id(testType.getId())
@@ -22,13 +23,14 @@ public class TestTypeMapperImpl implements TestTypeMapper {
                 .build();
     }
 
-
+    @Override
     public List<TestTypeResponseDTO> toResponseDTOList(List<TestType> testTypes) {
         return testTypes.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public TestType toEntity(TestTypeRequestDTO dto) {
         return TestType.builder()
                 .name(dto.getName())

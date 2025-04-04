@@ -11,6 +11,8 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+      properties:
+        hibernate.transaction.coordinator_class: org.hibernate.transaction.JDBCTransactionFactory
     show-sql: true
     properties:
       hibernate:
@@ -52,7 +54,26 @@ springdoc:
 # Настройки логирования
 logging:
   level:
+    root: INFO
     org:
-      springdoc: DEBUG
       springframework:
+        security: DEBUG
         web: DEBUG
+    com:
+      lab:
+        security: TRACE
+    io:
+      jsonwebtoken: DEBUG
+
+# Фреймворк jhipster
+jhipster:
+  security:
+    authentication:
+      jwt:
+        secret: my-secret-token-to-change-in-production
+        token-validity-in-seconds: 86400
+
+# токен
+token:
+  signing:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855

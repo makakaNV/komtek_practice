@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -38,8 +39,8 @@ public class TestTypeController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Получить все типы лаб. исследований",
-            description = "Возвращает список всех типов лаб. исследований." +
-                    " Реализована пагинация: по умолчанию page=0 & size=50"
+            description = "Возвращает список всех типов лаб. исследований. Реализована пагинация",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -49,6 +50,11 @@ public class TestTypeController {
     @ApiResponse(
             responseCode = "404",
             description = "Типы лаб. исследования не найдены",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Требуется авторизация. Необходим токен.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<List<TestTypeResponseDTO>> getAllTestTypes(
@@ -66,7 +72,8 @@ public class TestTypeController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Получить тип лаб. исследований по ID",
-            description = "Возвращает тип лаб. исследований по указанному идентификатору"
+            description = "Возвращает тип лаб. исследований по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -88,7 +95,8 @@ public class TestTypeController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Создать новый тип лаб. исследований",
-            description = "Создает новый тип лаб. исследований на основе переданных данных"
+            description = "Создает новый тип лаб. исследований на основе переданных данных",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "201",
@@ -110,7 +118,8 @@ public class TestTypeController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Обновить тип лаб. исследований",
-            description = "Обновляет данные типа лаб. исследований по указанному id"
+            description = "Обновляет данные типа лаб. исследований по указанному id",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -139,7 +148,8 @@ public class TestTypeController {
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Удалить тип лаб. исследований",
-            description = "Удаляет тип лаб. исследований по указанному идентификатору"
+            description = "Удаляет тип лаб. исследований по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "204",

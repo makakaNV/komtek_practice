@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapperImpl implements OrderMapper {
 
+    @Override
     public OrderResponseDTO toResponseDTO(Order order) {
         return OrderResponseDTO.builder()
                 .id(order.getId())
@@ -24,12 +25,14 @@ public class OrderMapperImpl implements OrderMapper {
                 .build();
     }
 
+    @Override
     public List<OrderResponseDTO> toResponseDTOList(List<Order> orders) {
         return orders.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Order toEntity(OrderRequestDTO dto, Patient patient) {
         return Order.builder()
                 .patient(patient)

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -40,7 +41,8 @@ public class OrderController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Получить все заявки",
-            description = "Возвращает список всех заявок. Реализована пагинация: по умолчанию page=0 & size=50"
+            description = "Возвращает список всех заявок. Реализована пагинация.",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -50,6 +52,11 @@ public class OrderController {
     @ApiResponse(
             responseCode = "404",
             description = "Заявки не найдены",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Требуется авторизация. Необходим токен.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders(
@@ -64,7 +71,11 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @SuppressWarnings("unused")
-    @Operation(summary = "Получить заявку по ID", description = "Возвращает заявку по указанному ID")
+    @Operation(
+            summary = "Получить заявку по ID",
+            description = "Возвращает заявку по указанному ID",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Заявка успешна найдена",
@@ -82,7 +93,11 @@ public class OrderController {
 
     @PostMapping
     @SuppressWarnings("unused")
-    @Operation(summary = "Создать новую заявку", description = "Создает новую заявку на основе переданных данных")
+    @Operation(
+            summary = "Создать новую заявку",
+            description = "Создает новую заявку на основе переданных данных",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "201",
             description = "Заявка успешно создана",
@@ -103,7 +118,10 @@ public class OrderController {
 
     @PutMapping("/{id}/status")
     @SuppressWarnings("unused")
-    @Operation(summary = "Обновить статус заявки", description = "Обновляет поле status у заявки")
+    @Operation(
+            summary = "Обновить статус заявки",
+            description = "Обновляет поле status у заявки",
+            security = { @SecurityRequirement(name = "bearerAuth") })
     @ApiResponse(
             responseCode = "200",
             description = "Заявка успешно обновлена",
@@ -125,7 +143,11 @@ public class OrderController {
 
     @GetMapping("/patient/{patientId}")
     @SuppressWarnings("unused")
-    @Operation(summary = "Получить заявки по ID пациента", description = "Возвращает список заявок по ID пациента")
+    @Operation(
+            summary = "Получить заявки по ID пациента",
+            description = "Возвращает список заявок по ID пациента",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Список заявок успешно получен",
@@ -144,8 +166,11 @@ public class OrderController {
 
     @GetMapping("/{orderId}/tests")
     @SuppressWarnings("unused")
-    @Operation(summary = "Получить лаб. исследования по ID заявки",
-            description = "Возвращает список лаб. исследований по ID заявки")
+    @Operation(
+            summary = "Получить лаб. исследования по ID заявки",
+            description = "Возвращает список лаб. исследований по ID заявки",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Список заявок успешно получен",
@@ -163,7 +188,11 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удаление заявки", description = "Удаляет заявку по указанному идентификатору")
+    @Operation(
+            summary = "Удаление заявки",
+            description = "Удаляет заявку по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "204",
             description = "Заявка успешно удален"

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -38,8 +39,8 @@ public class TestController {
     @GetMapping
     @Operation(
             summary = "Получить все лаб. исследования",
-            description = "Возвращает список всех лаб. исследований." +
-                    " Реализована пагинация: по умолчанию page=0 & size=50"
+            description = "Возвращает список всех лаб. исследований. Реализована пагинация",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -49,6 +50,11 @@ public class TestController {
     @ApiResponse(
             responseCode = "404",
             description = "Лаб. исследования не найдены",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Требуется авторизация. Необходим токен.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<List<TestResponseDTO>> getAllTests(
@@ -65,7 +71,8 @@ public class TestController {
     @GetMapping("/{id}")
     @Operation(
             summary = "Получить лаб. исследования по ID",
-            description = "Возвращает лаб. исследования по указанному ID"
+            description = "Возвращает лаб. исследования по указанному ID",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -86,7 +93,8 @@ public class TestController {
     @PostMapping
     @Operation(
             summary = "Создать новое лаб. исследование",
-            description = "Создает новое лаб. исследование на основе переданных данных"
+            description = "Создает новое лаб. исследование на основе переданных данных",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "201",
@@ -107,7 +115,8 @@ public class TestController {
     @PutMapping("/{id}")
     @Operation(
             summary = "Обновить лаб. исследование",
-            description = "Обновляет данные лаб. исследования по указанному ID"
+            description = "Обновляет данные лаб. исследования по указанному ID",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -136,7 +145,8 @@ public class TestController {
     @PutMapping("/{id}/result")
     @Operation(
             summary = "Добавляет результат лаб. исследования",
-            description = "Добавляет результат лаб. исследования по указанному ID"
+            description = "Добавляет результат лаб. исследования по указанному ID",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",

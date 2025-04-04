@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -40,7 +41,9 @@ public class PatientController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Получить всех пациентов",
-            description = "Возвращает список всех пациентов. Реализована пагинация: по умолчанию page=0 & size=50")
+            description = "Возвращает список всех пациентов. Реализована пагинация.",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Список пациентов успешно получен",
@@ -49,6 +52,11 @@ public class PatientController {
     @ApiResponse(
             responseCode = "404",
             description = "Пациенты не найдены",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Требуется авторизация. Необходим токен.",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<List<PatientResponseDTO>> getAllPatients(
@@ -64,7 +72,11 @@ public class PatientController {
 
     @GetMapping("/{id}")
     @SuppressWarnings("unused")
-    @Operation(summary = "Получить пациента по ID", description = "Возвращает пациента по указанному идентификатору")
+    @Operation(
+            summary = "Получить пациента по ID",
+            description = "Возвращает пациента по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "200",
             description = "Пациент успешно найден",
@@ -83,8 +95,10 @@ public class PatientController {
 
     @PostMapping
     @SuppressWarnings("unused")
-    @Operation(summary = "Создать нового пациента", description = "Создает нового пациента" +
-            " на основе переданных данных")
+    @Operation(
+            summary = "Создать нового пациента",
+            description = "Создает нового пациента на основе переданных данных",
+            security = { @SecurityRequirement(name = "bearerAuth") })
     @ApiResponse(
             responseCode = "201",
             description = "Пациент успешно создан",
@@ -103,7 +117,10 @@ public class PatientController {
 
     @PutMapping("/{id}")
     @SuppressWarnings("unused")
-    @Operation(summary = "Обновить пациента", description = "Обновляет данные пациента по указанному идентификатору")
+    @Operation(
+            summary = "Обновить пациента",
+            description = "Обновляет данные пациента по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") })
     @ApiResponse(
             responseCode = "200",
             description = "Пациент успешно обновлен",
@@ -131,8 +148,10 @@ public class PatientController {
 
     @GetMapping("/search")
     @SuppressWarnings("unused")
-    @Operation(summary = "Поиск пациентов по ФИО", description = "Возвращает список пациентов," +
-            " соответствующих указанным параметрам поиска")
+    @Operation(
+            summary = "Поиск пациентов по ФИО",
+            description = "Возвращает список пациентов, соответствующих указанным параметрам поиска",
+            security = { @SecurityRequirement(name = "bearerAuth") })
     @ApiResponse(
             responseCode = "200",
             description = "Список пациентов успешно получен",
@@ -154,8 +173,10 @@ public class PatientController {
 
     @GetMapping("/search-by-birthdate")
     @SuppressWarnings("unused")
-    @Operation(summary = "Поиск пациентов по дате рождения", description = "Возвращает список пациентов," +
-            " родившихся в указанную дату")
+    @Operation(
+            summary = "Поиск пациентов по дате рождения",
+            description = "Возвращает список пациентов, родившихся в указанную дату",
+            security = { @SecurityRequirement(name = "bearerAuth") })
     @ApiResponse(
             responseCode = "200",
             description = "Список пациентов успешно получен",
@@ -175,7 +196,8 @@ public class PatientController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Поиск пациентов по ФИО и/или дате рождения",
-            description = "Возвращает список пациентов по заданным параметрам поиска"
+            description = "Возвращает список пациентов по заданным параметрам поиска",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -206,7 +228,8 @@ public class PatientController {
     @SuppressWarnings("unused")
     @Operation(
             summary = "Получить заказы пациента",
-            description = "Возвращает список заказов для указанного пациента"
+            description = "Возвращает список заказов для указанного пациента",
+            security = { @SecurityRequirement(name = "bearerAuth") }
     )
     @ApiResponse(
             responseCode = "200",
@@ -224,7 +247,11 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удалить пациента", description = "Удаляет пациента по указанному идентификатору")
+    @Operation(
+            summary = "Удалить пациента",
+            description = "Удаляет пациента по указанному идентификатору",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
     @ApiResponse(
             responseCode = "204",
             description = "Пациент успешно удален"

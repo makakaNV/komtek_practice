@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class PatientMapperImpl implements PatientMapper {
 
+    @Override
     public PatientResponseDTO toResponseDTO(Patient patient) {
         return PatientResponseDTO.builder()
                 .id(patient.getId())
@@ -25,12 +26,14 @@ public class PatientMapperImpl implements PatientMapper {
                 .build();
     }
 
+    @Override
     public List<PatientResponseDTO> toResponseDTOList(List<Patient> patients) {
         return patients.stream()
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Patient toEntity(PatientRequestDTO dto) {
         return Patient.builder()
                 .lastName(dto.getLastName())

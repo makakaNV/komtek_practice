@@ -5,10 +5,12 @@ import com.lab.dto.response.OrderResponseDTO;
 import com.lab.dto.response.PatientResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public interface PatientService {
     Page<PatientResponseDTO> getAllPatients(Pageable pageable);
     PatientResponseDTO createPatient(PatientRequestDTO patientDTO);
