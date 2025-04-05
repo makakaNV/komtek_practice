@@ -1,12 +1,14 @@
 package com.lab.service.impl;
 
 import com.lab.entity.User;
+import com.lab.exception.EmailAlreadyExistsException;
+import com.lab.exception.UserAlreadyExistsException;
+import com.lab.exception.UserNotFoundException;
 import com.lab.repository.UserRepository;
 import com.lab.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,12 +37,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            // Заменить на свои исключения
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
         }
 
         if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new EmailAlreadyExistsException("Пользователь с таким email уже существует");
         }
 
         return save(user);
@@ -53,8 +54,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getByUsername(String username) {
+
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
 
     }
 

@@ -40,6 +40,11 @@ public class AuthController {
             description = "Ошибка валидации полей",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
+    @ApiResponse(
+            responseCode = "409",
+            description = "Пользователь с таким именем/email уже существует",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
     public JwtAuthenticationResponseDTO signUp(@RequestBody @Valid SignUpRequestDTO request) {
         return authenticationService.signUp(request);
     }
@@ -59,6 +64,11 @@ public class AuthController {
     @ApiResponse(
             responseCode = "400",
             description = "Ошибка валидации полей",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "401",
+            description = "Неверный пароль",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     @ApiResponse(

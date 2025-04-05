@@ -5,13 +5,14 @@ import com.lab.dto.request.SignUpRequestDTO;
 import com.lab.dto.response.JwtAuthenticationResponseDTO;
 import com.lab.entity.Role;
 import com.lab.entity.User;
+import com.lab.exception.InvalidPasswordException;
+import com.lab.exception.UserNotFoundException;
+import com.lab.repository.UserRepository;
 import com.lab.service.AuthenticationService;
 import com.lab.service.JwtService;
 import com.lab.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager; //del
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder; //del
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +22,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    //private final AuthenticationManager authenticationManager;
 
+    private final UserRepository userRepository;
 
     /**
      * Регистрация пользователя
@@ -54,14 +56,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public JwtAuthenticationResponseDTO signIn(SignInRequestDTO request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
-                request.getPassword()
-        ));
 
-        var user = userService
-                .userDetailsService()
-                .loadUserByUsername(request.getUsername());
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Неверный пароль");
+        }
 
         var jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponseDTO(jwt);
