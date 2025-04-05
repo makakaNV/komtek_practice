@@ -55,15 +55,12 @@ springdoc:
 logging:
   level:
     root: INFO
-    org:
-      springframework:
-        security: DEBUG
-        web: DEBUG
-    com:
-      lab:
-        security: TRACE
-    io:
-      jsonwebtoken: DEBUG
+    com.lab.interceptor: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type: WARN
+    org.springframework.security: DEBUG
+
 
 # Фреймворк jhipster
 jhipster:

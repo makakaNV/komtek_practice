@@ -32,5 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
-# Настройка бд
+# Настройка бд / security key
 application-dev.yml
+
+# логирование
+audit.log
+
