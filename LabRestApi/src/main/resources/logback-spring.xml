@@ -22,7 +22,7 @@
     </appender>
 
     <!-- AuditInterceptor пишет в файл -->
-    <logger name="com.lab.interceptor.AuditInterceptor" level="INFO" additivity="false">
+    <logger name="com.lab.util.AuditInterceptor" level="INFO" additivity="false">
         <appender-ref ref="AUDIT_FILE"/>
     </logger>
 

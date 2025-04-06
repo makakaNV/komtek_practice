@@ -1,4 +1,4 @@
-package com.lab.interceptor;
+package com.lab.util;
 
 
 import com.lab.service.impl.JwtServiceImpl;

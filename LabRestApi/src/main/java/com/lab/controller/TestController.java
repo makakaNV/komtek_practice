@@ -16,9 +16,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -130,7 +128,7 @@ public class TestController {
     )
     @ApiResponse(
             responseCode = "404",
-            description = "лаб. исследование не найдено",
+            description = "Лаб. исследование не найдено",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
     )
     public ResponseEntity<TestResponseDTO> updateTest(
@@ -172,6 +170,39 @@ public class TestController {
         String newResult = resultUpdate.get("result");
         TestResponseDTO updatedTest = testServiceImpl.updateTestResult(id, newResult);
         return ResponseEntity.ok(updatedTest);
+    }
+
+    @GetMapping("/{id}/pdf")
+    @Operation(
+            summary = "Выгружает PDF файл лаб. исследования",
+            description = "Генерирует и загружает PDF файл с данными лаб. исследования по ID",
+            security = { @SecurityRequirement(name = "bearerAuth") }
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "PDF файл успешно сгенерирован",
+            content = @Content(mediaType = "application/pdf")
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Лаб. исследование не найдено",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Ошибка генерации PDF",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+    )
+    public ResponseEntity<byte[]> generatePdf(@PathVariable Long id) {
+        byte[] pdfBytes = testServiceImpl.generateTestPdf(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename("test_" + id + ".pdf")
+                .build());
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
 }

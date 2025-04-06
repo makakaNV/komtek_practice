@@ -1,6 +1,6 @@
 package com.lab.config;
 
-import com.lab.interceptor.AuditInterceptor;
+import com.lab.util.AuditInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -15,4 +15,6 @@ public interface TestService {
     TestResponseDTO createTest(TestRequestDTO testDTO);
     TestResponseDTO updateTest(Long id, TestRequestDTO testDTO);
     TestResponseDTO updateTestResult(Long id, String newResult);
+
+    byte[] generateTestPdf(Long id);
 }

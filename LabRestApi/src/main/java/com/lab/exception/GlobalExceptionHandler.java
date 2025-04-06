@@ -138,6 +138,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(PDFCreationErrorException.class)
+    public ResponseEntity<ErrorResponse> handlPDFCreationError(PDFCreationErrorException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
