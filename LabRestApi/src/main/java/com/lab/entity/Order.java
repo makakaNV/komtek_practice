@@ -27,7 +27,7 @@ public class Order {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "status")

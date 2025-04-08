@@ -20,7 +20,7 @@
             <column name="patient_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="createdDate" type="timestamp"/>
+            <column name="created_date" type="timestamp"/>
             <column name="status" type="varchar(50)"/>
             <column name="comment" type="text"/>
         </createTable>
@@ -28,7 +28,8 @@
         <addForeignKeyConstraint
                 baseTableName="orders" baseColumnNames="patient_id"
                 referencedTableName="patient" referencedColumnNames="id"
-                constraintName="fk_orders_patient"/>
+                constraintName="fk_orders_patient"
+                onDelete="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

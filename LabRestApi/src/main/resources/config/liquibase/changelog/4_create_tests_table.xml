@@ -24,21 +24,23 @@
             <column name="test_type_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="executionDate" type="timestamp"/>
+            <column name="execution_date" type="timestamp"/>
             <column name="result" type="text"/>
-            <column name="referenceValues" type="text"/>
+            <column name="reference_values" type="text"/>
             <column name="status" type="varchar(50)"/>
         </createTable>
 
         <addForeignKeyConstraint
                 baseTableName="tests" baseColumnNames="order_id"
                 referencedTableName="orders" referencedColumnNames="id"
-                constraintName="fk_tests_orders"/>
+                constraintName="fk_tests_orders"
+                onDelete="CASCADE"/>
 
         <addForeignKeyConstraint
                 baseTableName="tests" baseColumnNames="test_type_id"
                 referencedTableName="test_types" referencedColumnNames="id"
-                constraintName="fk_tests_test_types"/>
+                constraintName="fk_tests_test_types"
+                onDelete="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

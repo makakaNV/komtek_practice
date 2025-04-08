@@ -17,6 +17,8 @@ import com.lab.service.TestService;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfWriter;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,7 @@ public class TestServiceImpl implements TestService {
         return testsPage.map(testMapperImpl::toResponseDTO);
     }
 
+    @Cacheable(value = "tests", key = "#id")
     @Override
     public TestResponseDTO getTestById(Long id) {
         Test test = testRepository.findById(id)
@@ -81,6 +84,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    @CachePut(value = "tests", key = "#id")
     public TestResponseDTO updateTest(Long id, TestRequestDTO testDTO) {
         Test test = testRepository.findById(id)
                 .orElseThrow(() -> new TestNotFoundException("Тест с id-" + id + " не найден"));
@@ -95,6 +99,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    @CachePut(value = "tests", key = "#id")
     public TestResponseDTO updateTestResult(Long id, String newResult) {
         Test test = testRepository.findById(id)
                 .orElseThrow(() -> new TestNotFoundException("Тест с id-" + id + " не найден"));

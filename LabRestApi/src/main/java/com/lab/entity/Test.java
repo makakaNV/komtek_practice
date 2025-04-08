@@ -30,13 +30,13 @@ public class Test {
     @JoinColumn(name = "test_type_id")
     private TestType testType;
 
-    @Column(name = "executionDate")
+    @Column(name = "execution_date")
     private LocalDateTime executionDate;
 
     @Column(name = "result")
     private String result;
 
-    @Column(name = "referenceValues")
+    @Column(name = "reference_values")
     private String referenceValues;
 
     @Column(name = "status")

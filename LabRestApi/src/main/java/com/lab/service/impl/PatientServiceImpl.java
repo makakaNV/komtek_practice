@@ -1,17 +1,24 @@
 package com.lab.service.impl;
 
+import com.lab.cache.impl.CacheServiceImpl;
 import com.lab.dto.request.PatientRequestDTO;
 import com.lab.dto.response.OrderResponseDTO;
 import com.lab.dto.response.PatientResponseDTO;
 import com.lab.entity.Order;
 import com.lab.entity.Patient;
+import com.lab.entity.Test;
 import com.lab.exception.OrderNotFoundException;
 import com.lab.exception.PatientNotFoundException;
 import com.lab.mapper.impl.OrderMapperImpl;
 import com.lab.mapper.impl.PatientMapperImpl;
 import com.lab.repository.OrderRepository;
 import com.lab.repository.PatientRepository;
+import com.lab.repository.TestRepository;
 import com.lab.service.PatientService;
+import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -24,19 +31,25 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final OrderRepository orderRepository;
+    private final TestRepository testRepository;
     private final PatientMapperImpl patientMapperImpl;
     private final OrderMapperImpl orderMapperImpl;
+    private final CacheServiceImpl cacheServiceImpl;
 
     public PatientServiceImpl(
             PatientRepository patientRepository,
             OrderRepository orderRepository,
             PatientMapperImpl patientMapperImpl,
-            OrderMapperImpl orderMapperImpl
+            OrderMapperImpl orderMapperImpl,
+            CacheServiceImpl patientCacheServiceImpl,
+            TestRepository testRepository
     ) {
         this.patientRepository = patientRepository;
         this.orderRepository = orderRepository;
         this.patientMapperImpl = patientMapperImpl;
         this.orderMapperImpl = orderMapperImpl;
+        this.cacheServiceImpl = patientCacheServiceImpl;
+        this.testRepository = testRepository;
     }
 
     @Override
@@ -58,9 +71,12 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @CachePut(value = "patients", key = "#id")
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientDTO) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Пациентов с id-" + id + " не найдено"));
+
+        cacheServiceImpl.evictPatientCaches(patient);
 
         patient.setLastName(patientDTO.getLastName());
         patient.setFirstName(patientDTO.getFirstName());
@@ -76,6 +92,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Cacheable(value = "patients", key = "#id")
     public PatientResponseDTO getPatient(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Пациентов с id-" + id + " не найдено"));
@@ -92,6 +109,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Cacheable(value = "patientsByFio", key = "T(java.util.Objects).hash(#lastName, #firstName, #middleName)")
     public List<PatientResponseDTO> searchPatients(String lastName, String firstName, String middleName) {
         List<Patient> patients = patientRepository.findByLastNameAndFirstNameAndMiddleName(
                 lastName,
@@ -105,6 +123,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Cacheable(value = "patientsByBirthDate", key = "#birthDate")
     public List<PatientResponseDTO> searchPatientsByBirthDate(LocalDate birthDate) {
         List<Patient> patients = patientRepository.findByBirthDate(birthDate);
         if (patients.isEmpty()) {
@@ -141,9 +160,25 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @CacheEvict(value = "patients", key = "#id")
+    @Transactional
     public void deletePatient(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Пациентов с id-" + id + " не найдено"));
+
+        List<Order> orders = orderRepository.findByPatientId(patient.getId());
+        orders.forEach(order -> {
+            List<Test> tests = testRepository.findByOrderId(order.getId());
+            tests.forEach(test -> {
+                cacheServiceImpl.evictTestCaches(test);
+                testRepository.delete(test);
+            });
+            cacheServiceImpl.evictOrderCaches(order);
+            orderRepository.delete(order);
+        });
+
+        cacheServiceImpl.evictPatientCaches(patient);
         patientRepository.delete(patient);
     }
+
 }

@@ -17,16 +17,16 @@
             <column name="id" type="bigint" defaultValueComputed="nextval('patient_id_seq')">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="firstName" type="varchar(255)">
+            <column name="first_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="lastName" type="varchar(255)">
+            <column name="last_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="middleName" type="varchar(255)"/>
-            <column name="birthDate" type="date"/>
+            <column name="middle_name" type="varchar(255)"/>
+            <column name="birth_date" type="date"/>
             <column name="gender" type="varchar(10)"/>
-            <column name="phoneNumber" type="varchar(15)"/>
+            <column name="phone_number" type="varchar(15)"/>
             <column name="snils" type="varchar(20)"/>
         </createTable>
     </changeSet>
