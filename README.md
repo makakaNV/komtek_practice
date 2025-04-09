@@ -16,9 +16,12 @@
     1. AuditInterceptor перенесен в директорию util/.
 3. Добавлена выгрузка результатов лаб. исследований в PDF. Добавлен эндпоинт /{id}/pdf в TestController, метод generateTestPdf в TestServiceImpl.
 4. Добавлено кэширование данных. Для управления кэшированием используется `cache/CacheService` и `config/CacheConfig` с менедежером CaffeineCacheManager. В кэшировании учавствуют запросы получения данных по id `GET http://localhost:8888/api/v1/xxxx/{id}`, запросы удаления/обновления данных, а также запросы поиска пациента по ФИО/Дате рождения
+5. Названия столбцов таблиц изменены под `snake_case`
+6. Добавлены уведомления при изменении статуса заявки. Уведомления принимает тестовый контроллер `POST http://localhost:8888/api/v1/notifications`, сохраняет в тестовую таблицу `notifications`.
 
 ## Конфигурация и запуск 
-В файле `src/main/resources/application-dev.yml` нужно указать параметры подключения БД:  
+В файле `src/main/resources/application-dev.yml` нужно указать :
+Параметры подключения БД:
 
 ```yaml
 spring:
@@ -34,12 +37,20 @@ spring:
     show-sql: true
 ```
 
-Также указать secret key для подписи jwt-токенов
+Secret key для подписи jwt-токенов:
 
 ```yaml
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75000000
+```
+
+Для отправки запросов на тестовый контроллер указать url:
+
+```yaml
+notification:
+  service:
+    url: http://localhost:8080/api/v1/notifications
 ```
 
 Собрать и запустить проект можно через Maven:

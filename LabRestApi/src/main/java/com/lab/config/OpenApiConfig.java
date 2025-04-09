@@ -51,7 +51,8 @@ public class OpenApiConfig {
                 .group("public-api")
                 .pathsToMatch(
                         "/api/v1/auth/**",
-                        "/public/**"
+                        "/public/**",
+                        "/api/v1/notifications/**"
                 )
                 .build();
     }

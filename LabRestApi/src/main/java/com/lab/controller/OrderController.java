@@ -195,7 +195,7 @@ public class OrderController {
     )
     @ApiResponse(
             responseCode = "204",
-            description = "Заявка успешно удален"
+            description = "Заявка успешно удалена"
     )
     @ApiResponse(
             responseCode = "404",

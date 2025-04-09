@@ -35,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapperImpl orderMapperImpl;
     private final TestMapperImpl testMapperImpl;
     private final CacheServiceImpl cacheServiceImpl;
+    private final NotificationServiceImpl notificationServiceImpl;
 
     public OrderServiceImpl(
             OrderRepository orderRepository,
@@ -42,7 +43,8 @@ public class OrderServiceImpl implements OrderService {
             PatientRepository patientRepository,
             OrderMapperImpl orderMapperImpl,
             TestMapperImpl testMapperImpl,
-            CacheServiceImpl cacheServiceImpl
+            CacheServiceImpl cacheServiceImpl,
+            NotificationServiceImpl notificationServiceImpl
     ) {
         this.orderRepository = orderRepository;
         this.testRepository = testRepository;
@@ -50,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderMapperImpl = orderMapperImpl;
         this.testMapperImpl = testMapperImpl;
         this.cacheServiceImpl = cacheServiceImpl;
+        this.notificationServiceImpl = notificationServiceImpl;
     }
 
     @Override
@@ -93,6 +96,11 @@ public class OrderServiceImpl implements OrderService {
         cacheServiceImpl.evictOrderCaches(order);
         order.setStatus(status);
         order = orderRepository.save(order);
+
+        notificationServiceImpl.notifyOrderStatusChanged(
+                order.getId(),
+                "Статус заявки " + order.getId() + " изменён на " + status
+        );
 
         return orderMapperImpl.toResponseDTO(order);
     }

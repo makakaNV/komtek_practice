@@ -36,5 +36,6 @@ build/
 application-dev.yml
 
 # логирование
+audit.*.log
 audit.log
 

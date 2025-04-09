@@ -88,7 +88,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean isSecuredEndpoint(HttpServletRequest request) {
         return !request.getRequestURI().startsWith("/api/v1/auth/")
                 && !request.getRequestURI().startsWith("/swagger-ui/")
-                && !request.getRequestURI().startsWith("/v3/api-docs/");
+                && !request.getRequestURI().startsWith("/v3/api-docs/")
+                && !request.getRequestURI().startsWith("/api/v1/notifications");
     }
 
     private void sendError(HttpServletResponse response, String message, HttpStatus status) throws IOException {
